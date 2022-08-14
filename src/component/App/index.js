@@ -22,7 +22,7 @@ function App() {
   // const today =moment();
   const [today , setToday] = useState(moment())
   const startDay = today.clone().startOf("month").startOf("week");
-// window.moment = moment;
+window.moment = moment;
 
 const prevHandler =()=> {
   
@@ -41,7 +41,7 @@ const nextHandler =() =>{
     <ShadowWrapper>
         <Title/>
         <Monitor prevHandler={prevHandler} todayHandler={todayHandler} nextHandler={nextHandler} today={today}/>
-        <CalendarGrid startDay={startDay}/>
+        <CalendarGrid startDay={startDay} today={today}/>
     </ShadowWrapper>
   )
 }

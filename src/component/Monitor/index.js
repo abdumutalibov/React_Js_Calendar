@@ -48,7 +48,7 @@ const Monitor = ({today, prevHandler,todayHandler,nextHandler}) => {
        </div>
       <ButtonsWrapper>
         <ButtonWrapper onClick={prevHandler}> &lt;</ButtonWrapper>
-        <TodayButton onClick={todayHandler}>Todayjon</TodayButton>
+        <TodayButton onClick={todayHandler}>Today</TodayButton>
         <ButtonWrapper onClick={nextHandler}>&gt;</ButtonWrapper>
       </ButtonsWrapper>
    
