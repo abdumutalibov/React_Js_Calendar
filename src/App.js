@@ -1,27 +1,25 @@
 import logo from "./logo.svg";
 import "./App.css";
 import moment from "moment";
+
 function App() {
-  
   moment.updateLocale("en", { week: { dow: 1 } });
   const startDay = moment().startOf("month").startOf("week");
   const endDay = moment().endOf("month").endOf("week");
   console.log(startDay.format("YYYY-MM-DD"));
   console.log(endDay.format("YYYY-MM-DD"));
 
- 
   const calender = [];
   const day = startDay;
-
 
   while (!day.isAfter(endDay)) {
     calender.push(day.clone);
     day.add(1, "day");
   }
-console.log(calender);
- window.startDay = startDay
-  window.endDay = endDay
-window.moment = moment;
+  console.log(calender);
+  window.startDay = startDay;
+  window.endDay = endDay;
+  window.moment = moment;
   return (
     <div className="App">
       <header className="App-header">
