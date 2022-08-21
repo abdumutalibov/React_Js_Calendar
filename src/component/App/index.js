@@ -38,17 +38,17 @@ function App() {
 
   const [events, setEvents] = useState([]);
   const startDateQuery = startDay.clone().format("X");
-  const endDateQuery = startDay.clone().add(totalDays, 'days').format('X');
+  const endDateQuery = startDay.clone().add(totalDays, "days").format("X");
 
   useEffect(() => {
     fetch(`${url}/events?date_gte=${startDateQuery}&date_lte=${endDateQuery}`)
       .then((res) => res.json())
-      .then((res) => {
-        console.log("Response", res);
-        setEvents(res);
-      });
-  }, []);
+      .then((res) => { setEvents(res)});
+  }, [today]);
 
+  const openFormHandler =(method)=>{
+    console.log('onDubleClice', method)
+  }
   return (
     <ShadowWrapper>
       <Title />
@@ -58,7 +58,7 @@ function App() {
         nextHandler={nextHandler}
         today={today}
       />
-      <CalendarGrid startDay={startDay} today={today} totalDays={totalDays}/>
+      <CalendarGrid startDay={startDay} today={today} totalDays={totalDays} events={events} openFormHandler={openFormHandler}/>
     </ShadowWrapper>
   );
 }
