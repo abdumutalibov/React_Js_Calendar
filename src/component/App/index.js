@@ -28,14 +28,14 @@ const FormPositionWrapper = styled("div")`
   justify-content: center;
 `;
 const FormWrapper = styled(ShadowWrapper)`
-  width: 200px;
+  width: 320px;
   background-color: #1e1f21;
   color: #dddddd;
   box-shadow: unset;
 `;
 
 const EventTitle = styled("input")`
-  padding: 4px 14px;
+  padding: 8px 14px;
   font-size: 0.85rem;
   width: 100%;
   border: unset;
@@ -44,8 +44,8 @@ const EventTitle = styled("input")`
   outline: unset;
   border-bottom: 1px solid #464648;
 `;
-const EventBody = styled("input")`
-  padding: 4px 14px;
+const EventBody = styled("textarea")`
+  padding: 8px 14px;
   font-size: 0.85rem;
   width: 100%;
   border: unset;
@@ -53,11 +53,22 @@ const EventBody = styled("input")`
   color: #dddddd;
   outline: unset;
   border-bottom: 1px solid #464648;
+  resize: none;
+  height: 60px;
 `;
 const ButtonWrapper = styled("div")`
   padding: 8px 14px;
   display: flex;
   justify-content: flex-end;
+`;
+const ButtonsWrapper = styled("button")`
+  color: ${props => props.danger ? '#f00':'#27282A'};
+  border: 1px solid ${props => props.danger ? '#f00':'#27282A'};
+  border-radius:2px;
+  cursor: pointer;
+&:not(:last-child){
+  margin-right: 2px;
+}
 `;
 
 const url = "http://localhost:4000";
@@ -102,10 +113,10 @@ function App() {
       });
   }, [today]);
 
-  const openFormHandler = (methodName, eventForUpdate) => {
+  const openFormHandler = (methodName, eventForUpdate, dayItem) => {
     console.log("onDubleClice", methodName);
     setShowForm(true);
-    setEvent(eventForUpdate || defaultEvent);
+    setEvent(eventForUpdate ||{ ...defaultEvent, date: dayItem.format('X')});
     setMethod(methodName);
   };
 
@@ -137,14 +148,32 @@ function App() {
         console.log(res);
 
         if(method === 'Update') {
-setEvents(prevState => prevState.map(eventEl => eventEl.id === res.id ? res : eventEl) )
-        } else{
-
-          setEvents((prevState) => [...prevState, res]);
+        setEvents(prevState => prevState.map(eventEl => eventEl.id === res.id ? res : eventEl) )
+        } else {
+        setEvents((prevState) => [...prevState, res]);
         }
         cancelButtonHandler()
       });
   };
+
+  const removeEventHandler =()=>{
+    const fetchUrl = `${url}/events/${event.id}`;
+    const httpMethod = 'DELETE';
+
+    fetch(fetchUrl, {
+      method: httpMethod,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        setEvents(prevState => prevState.filter(eventEl => eventEl.id !== event.id) )
+        cancelButtonHandler()
+      });
+  }
   return (
     <>
       {isShowForm ? (
@@ -153,16 +182,22 @@ setEvents(prevState => prevState.map(eventEl => eventEl.id === res.id ? res : ev
             <EventTitle
               value={event.title}
               onChange={(e) => changeEventHandler(e.target.value, "title")}
+              placeholder='Title'
             />
             <EventBody
               value={event.description}
               onChange={(e) =>
                 changeEventHandler(e.target.value, "description")
               }
+              placeholder='Description'
             />
             <ButtonWrapper>
-              <button onClick={cancelButtonHandler}>Cancel </button>
-              <button onClick={eventFetchHandler}>{method}</button>
+              <ButtonsWrapper onClick={cancelButtonHandler}>Cancel </ButtonsWrapper>
+              <ButtonsWrapper onClick={eventFetchHandler}>{method}</ButtonsWrapper>
+              {method === 'Update'? (
+                <ButtonsWrapper danger onClick={removeEventHandler}>Remove</ButtonsWrapper>
+
+              ):(null)}
             </ButtonWrapper>
           </FormWrapper>
         </FormPositionWrapper>

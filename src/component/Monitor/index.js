@@ -47,7 +47,7 @@ const Monitor = ({today, prevHandler,todayHandler,nextHandler}) => {
       <TextWrapper>{today.format('YYYY')}</TextWrapper>
        </div>
       <ButtonsWrapper>
-        <ButtonWrapper onClick={prevHandler}> &lt;</ButtonWrapper>
+        <ButtonWrapper onClick={prevHandler}>&lt;</ButtonWrapper>
         <TodayButton onClick={todayHandler}>Today</TodayButton>
         <ButtonWrapper onClick={nextHandler}>&gt;</ButtonWrapper>
       </ButtonsWrapper>
