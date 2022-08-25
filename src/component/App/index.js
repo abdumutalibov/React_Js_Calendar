@@ -62,13 +62,13 @@ const ButtonWrapper = styled("div")`
   justify-content: flex-end;
 `;
 const ButtonsWrapper = styled("button")`
-  color: ${props => props.danger ? '#f00':'#27282A'};
-  border: 1px solid ${props => props.danger ? '#f00':'#27282A'};
-  border-radius:2px;
+  color: ${(props) => (props.danger ? "#f00" : "#27282A")};
+  border: 1px solid ${(props) => (props.danger ? "#f00" : "#27282A")};
+  border-radius: 2px;
   cursor: pointer;
-&:not(:last-child){
-  margin-right: 2px;
-}
+  &:not(:last-child) {
+    margin-right: 2px;
+  }
 `;
 
 const url = "http://localhost:4000";
@@ -79,6 +79,7 @@ const defaultEvent = {
   date: moment().format("X"),
 };
 function App() {
+  const [displayMode, setDisplayMode] = useState("month");
   moment.updateLocale("en", { week: { dow: 1 } });
   // const today =moment();
   const [today, setToday] = useState(moment());
@@ -116,7 +117,7 @@ function App() {
   const openFormHandler = (methodName, eventForUpdate, dayItem) => {
     console.log("onDubleClice", methodName);
     setShowForm(true);
-    setEvent(eventForUpdate ||{ ...defaultEvent, date: dayItem.format('X')});
+    setEvent(eventForUpdate || { ...defaultEvent, date: dayItem.format("X") });
     setMethod(methodName);
   };
 
@@ -132,13 +133,14 @@ function App() {
     }));
   };
   const eventFetchHandler = () => {
-    const fetchUrl = method === 'Update' ? `${url}/events/${event.id}` : `${url}/events`;
-    const httpMethod = method === 'Update' ? 'PATCH' : 'POST';
+    const fetchUrl =
+      method === "Update" ? `${url}/events/${event.id}` : `${url}/events`;
+    const httpMethod = method === "Update" ? "PATCH" : "POST";
 
     fetch(fetchUrl, {
       method: httpMethod,
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
 
       body: JSON.stringify(event),
@@ -147,33 +149,36 @@ function App() {
       .then((res) => {
         console.log(res);
 
-        if(method === 'Update') {
-        setEvents(prevState => prevState.map(eventEl => eventEl.id === res.id ? res : eventEl) )
+        if (method === "Update") {
+          setEvents((prevState) =>
+            prevState.map((eventEl) => (eventEl.id === res.id ? res : eventEl))
+          );
         } else {
-        setEvents((prevState) => [...prevState, res]);
+          setEvents((prevState) => [...prevState, res]);
         }
-        cancelButtonHandler()
+        cancelButtonHandler();
       });
   };
 
-  const removeEventHandler =()=>{
+  const removeEventHandler = () => {
     const fetchUrl = `${url}/events/${event.id}`;
-    const httpMethod = 'DELETE';
+    const httpMethod = "DELETE";
 
     fetch(fetchUrl, {
       method: httpMethod,
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-
     })
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
-        setEvents(prevState => prevState.filter(eventEl => eventEl.id !== event.id) )
-        cancelButtonHandler()
+        setEvents((prevState) =>
+          prevState.filter((eventEl) => eventEl.id !== event.id)
+        );
+        cancelButtonHandler();
       });
-  }
+  };
   return (
     <>
       {isShowForm ? (
@@ -182,22 +187,27 @@ function App() {
             <EventTitle
               value={event.title}
               onChange={(e) => changeEventHandler(e.target.value, "title")}
-              placeholder='Title'
+              placeholder="Title"
             />
             <EventBody
               value={event.description}
               onChange={(e) =>
                 changeEventHandler(e.target.value, "description")
               }
-              placeholder='Description'
+              placeholder="Description"
             />
             <ButtonWrapper>
-              <ButtonsWrapper onClick={cancelButtonHandler}>Cancel </ButtonsWrapper>
-              <ButtonsWrapper onClick={eventFetchHandler}>{method}</ButtonsWrapper>
-              {method === 'Update'? (
-                <ButtonsWrapper danger onClick={removeEventHandler}>Remove</ButtonsWrapper>
-
-              ):(null)}
+              <ButtonsWrapper onClick={cancelButtonHandler}>
+                Cancel{" "}
+              </ButtonsWrapper>
+              <ButtonsWrapper onClick={eventFetchHandler}>
+                {method}
+              </ButtonsWrapper>
+              {method === "Update" ? (
+                <ButtonsWrapper danger onClick={removeEventHandler}>
+                  Remove
+                </ButtonsWrapper>
+              ) : null}
             </ButtonWrapper>
           </FormWrapper>
         </FormPositionWrapper>
@@ -205,18 +215,22 @@ function App() {
       <ShadowWrapper>
         <Title />
         <Monitor
+          today={today}
           prevHandler={prevHandler}
           todayHandler={todayHandler}
           nextHandler={nextHandler}
-          today={today}
+          setDisplayMode={setDisplayMode}
+          displayMode={displayMode}
         />
-        <CalendarGrid
-          startDay={startDay}
-          today={today}
-          totalDays={totalDays}
-          events={events}
-          openFormHandler={openFormHandler}
-        />
+        {displayMode === "month" ? (
+          <CalendarGrid
+            startDay={startDay}
+            today={today}
+            totalDays={totalDays}
+            events={events}
+            openFormHandler={openFormHandler}
+          />
+        ) : null}
       </ShadowWrapper>
     </>
   );

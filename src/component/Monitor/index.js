@@ -22,30 +22,45 @@ display: flex;
 align-items: center;
 `
 
+const ButtonsCenterWrapper = styled('ButtonsWrapper')`
+position: absolute;
+top: 50%;
+right: 50%;
+transform: translate(50%, -50%);
+`
 
 const ButtonWrapper = styled('button')`
 border: unset;
-background-color: #565759;
-height: 20px;
-margin-right: 2px;
+background-color: ${props => props.unPresses ? '#27282A':'#565759'};
+border: 1px solid #565759;
+height: 28px;
 border-radius: 4px;
-color: #E6E6E6;
+color: ${props => props.unPresses ? '#a4a6a9' :'#E6E6'} #E6E6E6;
 outline:unset;
 cursor: pointer;
+&:not(:last-child){
+  margin-right: 2px;
+}
+display: flex;
+justify-content: center;
+align-items: center;
 `
 
 const TodayButton = styled(ButtonWrapper)`
-padding-right: 16px;
-padding-left: 16px;
+
 font-weight: bold;
 `
-const Monitor = ({today, prevHandler,todayHandler,nextHandler}) => {
+const Monitor = ({today, prevHandler,todayHandler,nextHandler,setDisplayMode,displayMode}) => {
   return (
   <DivWrapper>
     <div>
       <Titlewrapper>{today.format('MMMM')}</Titlewrapper>
       <TextWrapper>{today.format('YYYY')}</TextWrapper>
        </div>
+       <ButtonsCenterWrapper>
+        <ButtonWrapper unPresses={displayMode === 'month'} onClick={() =>setDisplayMode('month')}>Month</ButtonWrapper>
+        <ButtonWrapper unPresses={displayMode === 'day'} onClick={() =>setDisplayMode('day')}>Day</ButtonWrapper>
+      </ButtonsCenterWrapper>
       <ButtonsWrapper>
         <ButtonWrapper onClick={prevHandler}>&lt;</ButtonWrapper>
         <TodayButton onClick={todayHandler}>Today</TodayButton>
