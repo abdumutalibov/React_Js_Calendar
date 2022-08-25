@@ -13,3 +13,4 @@ export const RowInCell = styled.div`
     props.justifyContent ? props.justifyContent : "flex-start"};
   ${(props) => props.pr && `padding-right: ${props.pr * 8}px`}
 `;
+
