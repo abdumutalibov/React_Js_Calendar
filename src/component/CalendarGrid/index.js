@@ -13,7 +13,7 @@ const GridWrapper = styled.div`
 
 
 
-const CalendarGrid = ({ startDay, today, totalDays, events, openFormHandler }) => {
+const CalendarGrid = ({ startDay, today, totalDays, events, openFormHandler,setDisplayMode }) => {
 
 
   // const daysArray = [...Array(42)].map(() => day.add(1, "day").clone());
@@ -24,7 +24,7 @@ const CalendarGrid = ({ startDay, today, totalDays, events, openFormHandler }) =
     <CalendarGridHeader/>
       </GridWrapper>
       <GridWrapper>
- <MonthDaysList totalDays={totalDays} openFormHandler={openFormHandler} events={events} startDay={startDay} today={today}/>
+ <MonthDaysList totalDays={totalDays} openFormHandler={openFormHandler} events={events} startDay={startDay} today={today} setDisplayMode={setDisplayMode}/>
       </GridWrapper>
     </>
   );

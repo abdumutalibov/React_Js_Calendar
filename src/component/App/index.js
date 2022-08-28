@@ -6,6 +6,7 @@ import styled from "styled-components";
 import Title from "../Title";
 import { DISPLAY_MODE_DAY, DISPLAY_MODE_MONTH } from "../../helpers/constants";
 import { DayShowComponent } from "../DayShowComponent";
+import { ButtonsWrapper, ButtonWrapper, EventBody, EventTitle } from "../../containers/StyledComponent";
 
 const ShadowWrapper = styled("div")`
   min-width: 850px;
@@ -42,42 +43,6 @@ const FormWrapper = styled(ShadowWrapper)`
   box-shadow: unset;
 `;
 
-const EventTitle = styled("input")`
-  padding: 8px 14px;
-  font-size: 0.85rem;
-  width: 100%;
-  border: unset;
-  background-color: #1e1f21;
-  color: #dddddd;
-  outline: unset;
-  border-bottom: 1px solid #464648;
-`;
-const EventBody = styled("textarea")`
-  padding: 8px 14px;
-  font-size: 0.85rem;
-  width: 100%;
-  border: unset;
-  background-color: #1e1f21;
-  color: #dddddd;
-  outline: unset;
-  border-bottom: 1px solid #464648;
-  resize: none;
-  height: 60px;
-`;
-const ButtonWrapper = styled("div")`
-  padding: 8px 14px;
-  display: flex;
-  justify-content: flex-end;
-`;
-const ButtonsWrapper = styled("button")`
-  color: ${(props) => (props.danger ? "#f00" : "#27282A")};
-  border: 1px solid ${(props) => (props.danger ? "#f00" : "#27282A")};
-  border-radius: 2px;
-  cursor: pointer;
-  &:not(:last-child) {
-    margin-right: 2px;
-  }
-`;
 
 const url = "http://localhost:4000";
 const totalDays = 42;
@@ -123,10 +88,14 @@ function App() {
   }, [today]);
 
   const openFormHandler = (methodName, eventForUpdate, dayItem) => {
-    console.log("onDubleClice", methodName);
-    setShowForm(true);
     setEvent(eventForUpdate || { ...defaultEvent, date: dayItem.format("X") });
     setMethod(methodName);
+  };
+
+  const openModalFormHandler = (methodName, eventForUpdate, dayItem) => {
+    console.log("onDubleClice", methodName);
+    setShowForm(true);
+    openFormHandler(methodName, eventForUpdate, dayItem)
   };
 
   const cancelButtonHandler = () => {
@@ -237,11 +206,24 @@ function App() {
             today={today}
             totalDays={totalDays}
             events={events}
-            openFormHandler={openFormHandler}
+            openFormHandler={openModalFormHandler}
+            setDisplayMode={setDisplayMode}
           />
         ) : null}
         {displayMode === DISPLAY_MODE_DAY ? (
-          <DayShowComponent events={events} today={today} selectedEvent={event} setEvent={setEvent}/>
+          <DayShowComponent 
+          events={events} 
+          today={today} 
+          selectedEvent={event} 
+          setEvent={setEvent} 
+          setDisplayMode={setDisplayMode}
+          changeEventHandler={changeEventHandler}
+          cancelButtonHandler={cancelButtonHandler}
+          eventFetchHandler={eventFetchHandler}
+          method={method}
+          removeEventHandler={removeEventHandler}
+          openFormHandler={openFormHandler}
+          />
         ) : null}
       </ShadowWrapper>
     </>
