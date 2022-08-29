@@ -1,3 +1,4 @@
+import moment from "moment";
 import React from "react";
 import styled from "styled-components";
 import {
@@ -7,11 +8,11 @@ import {
   EventTitle,
 } from "../../containers/StyledComponent";
 import { isDayContainCurrentEvent } from "../../helpers";
+import { ITEMS_REP_DAY } from "../../helpers/constants";
 const DayShowWrapper = styled("div")`
   display: flex;
   flex-grow: 1;
   border-top: 1px solid #464648;
-
 `;
 
 const EventListWrapper = styled("ul")`
@@ -58,6 +59,38 @@ const NoEventMsg = styled("div")`
   right: 50%;
   transform: translate(50%, -50%);
 `;
+const ScaleWrapper = styled("div")`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0 4px;
+`;
+
+const ScaleCellWrapper = styled("div")`
+  flex-grow: 1;
+  position: relative;
+  &:not(:last-child) {
+    border-bottom: 1px solid #464648;
+  }
+  margin-left: 32px;
+`;
+
+const ScaleCellTimeWrapper = styled("div")`
+  position: absolute;
+  left: -26px;
+  top: -6px;
+  font-size: 8px;
+`;
+
+const ScaleCellEventWrapper = styled("div")`
+  min-height: 16px;
+`;
+
+const EventItemButton = styled(EventItemWrapper)`
+  min-width: 50px;
+  width: unset;
+  margin-left: 4px;
+`;
 
 export const DayShowComponent = ({
   events,
@@ -73,10 +106,21 @@ export const DayShowComponent = ({
   const eventList = events.filter((event) =>
     isDayContainCurrentEvent(event, today)
   );
+
+  const cells = [...new Array(ITEMS_REP_DAY)].map((_, i) => {
+    const temp = [];
+    eventList.forEach((event) => {
+      if (+moment.unix(+event.date).format("H") === i) {
+        temp.push(event);
+      }
+    });
+    return temp;
+  });
+
   return (
     <DayShowWrapper>
       <EventListWrapper>
-        <EventListWrapper>
+        {/* <EventListWrapper>
           {eventList.map((event) => (
             <EventListItemWrapper key={event.id}>
               <EventItemWrapper onClick={() => openFormHandler('Update',event)}>
@@ -84,7 +128,25 @@ export const DayShowComponent = ({
               </EventItemWrapper>
             </EventListItemWrapper>
           ))}
-        </EventListWrapper>
+        </EventListWrapper> */}
+        <ScaleWrapper>
+          {cells.map((eventsList, i) => (
+            <ScaleCellWrapper>
+              <ScaleCellTimeWrapper>
+                {i ? <>{`${i}`.padStart(2, "0")}:00</> : null}
+              </ScaleCellTimeWrapper>
+              <ScaleCellEventWrapper>
+               {
+              eventsList.map(event => (
+                <EventItemButton onClick={() => openFormHandler("Update", event)}>
+                  {event.title}
+                </EventItemButton>
+              ))
+               }
+                </ScaleCellEventWrapper>
+            </ScaleCellWrapper>
+          ))}
+        </ScaleWrapper>
       </EventListWrapper>
       <EventFormWrapper>
         {selectedEvent ? (
@@ -117,10 +179,12 @@ export const DayShowComponent = ({
           </div>
         ) : (
           <>
-             <div>
-            <button onClick={() => openFormHandler('Create', null,today)}>Create new event</button>
-          </div>
-          <NoEventMsg>No event selected</NoEventMsg>
+            <div>
+              <button onClick={() => openFormHandler("Create", null, today)}>
+                Create new event
+              </button>
+            </div>
+            <NoEventMsg>No event selected</NoEventMsg>
           </>
         )}
       </EventFormWrapper>

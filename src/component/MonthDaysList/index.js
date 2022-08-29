@@ -1,7 +1,5 @@
 import React from "react";
-import {
-  isDayContainCurrentEvent,
-} from "../../helpers";
+import { isDayContainCurrentEvent } from "../../helpers";
 
 import { CalendarCell } from "../CalendarCell";
 
@@ -11,7 +9,7 @@ export const MonthDaysList = ({
   events,
   openFormHandler,
   today,
-  setDisplayMode
+  setDisplayMode,
 }) => {
   const day = startDay.clone().subtract(1, "day");
   const daysMap = [...Array(totalDays)].map(() => day.add(1, "day").clone());
@@ -22,7 +20,10 @@ export const MonthDaysList = ({
           today={today}
           dayItem={dayItem}
           openFormHandler={openFormHandler}
-          events={events.filter((event) =>isDayContainCurrentEvent(event, dayItem))} setDisplayMode={setDisplayMode}
+          events={events.filter((event) =>
+            isDayContainCurrentEvent(event, dayItem)
+          )}
+          setDisplayMode={setDisplayMode}
         />
       ))}
     </>

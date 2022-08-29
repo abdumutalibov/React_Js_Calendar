@@ -17,12 +17,10 @@ const Titlewrapper = styled(TextWrapper)`
   margin-right: 8px;
   margin-left: 8px;
 `;
-
 const ButtonsWrapper = styled("div")`
   display: flex;
   align-items: center;
 `;
-
 const ButtonsCenterWrapper = styled("ButtonsWrapper")`
   position: absolute;
   top: 50%;
@@ -30,7 +28,6 @@ const ButtonsCenterWrapper = styled("ButtonsWrapper")`
   transform: translate(50%, -50%);
   display: flex;
 `;
-
 const ButtonWrapper = styled("button")`
   border: unset;
   background-color: ${(props) => (props.unPresses ? "#27282A" : "#565759")};
@@ -47,7 +44,6 @@ const ButtonWrapper = styled("button")`
   justify-content: center;
   align-items: center;
 `;
-
 const TodayButton = styled(ButtonWrapper)`
   font-weight: bold;
 `;
@@ -65,7 +61,6 @@ const Monitor = ({
         {
           displayMode === DISPLAY_MODE_DAY ? (
         <TextWrapper> {today.format("DD")}</TextWrapper>
-            
           ):null
         }
         <Titlewrapper>{today.format("MMMM")}</Titlewrapper> 

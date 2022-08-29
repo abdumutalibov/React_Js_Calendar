@@ -21,7 +21,6 @@ const ShadowWrapper = styled("div")`
   display: flex;
   flex-direction: column;
 `;
-
 const FormPositionWrapper = styled("div")`
   position: absolute;
   z-index: 100;
@@ -42,8 +41,6 @@ const FormWrapper = styled(ShadowWrapper)`
   color: #dddddd;
   box-shadow: unset;
 `;
-
-
 const url = "http://localhost:4000";
 const totalDays = 42;
 const defaultEvent = {

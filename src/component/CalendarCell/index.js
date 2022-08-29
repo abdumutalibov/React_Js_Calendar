@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { CellWrapper, RowInCell } from "../../containers/StyledComponent";
 import { isCurrentDay, isSelectedMonth } from "../../helpers";
-import { DISPLAY_MODE_DAY, DISPLAY_MODE_MONTH } from "../../helpers/constants";
+import { DISPLAY_MODE_DAY } from "../../helpers/constants";
 
 const DayWrapper = styled.div`
 	height: 31px;
