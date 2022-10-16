@@ -6,7 +6,12 @@ import styled from "styled-components";
 import Title from "../Title";
 import { DISPLAY_MODE_DAY, DISPLAY_MODE_MONTH } from "../../helpers/constants";
 import { DayShowComponent } from "../DayShowComponent";
-import { ButtonsWrapper, ButtonWrapper, EventBody, EventTitle } from "../../containers/StyledComponent";
+import {
+  ButtonsWrapper,
+  ButtonWrapper,
+  EventBody,
+  EventTitle,
+} from "../../containers/StyledComponent";
 
 const ShadowWrapper = styled("div")`
   min-width: 850px;
@@ -35,7 +40,7 @@ const FormPositionWrapper = styled("div")`
 `;
 const FormWrapper = styled(ShadowWrapper)`
   width: 320px;
-  min-width:320px;
+  min-width: 320px;
   height: 132px;
   background-color: #1e1f21;
   color: #dddddd;
@@ -46,6 +51,7 @@ const totalDays = 42;
 const defaultEvent = {
   title: "",
   description: "",
+  duration: 1,
   date: moment().format("X"),
 };
 function App() {
@@ -92,7 +98,7 @@ function App() {
   const openModalFormHandler = (methodName, eventForUpdate, dayItem) => {
     console.log("onDubleClice", methodName);
     setShowForm(true);
-    openFormHandler(methodName, eventForUpdate, dayItem)
+    openFormHandler(methodName, eventForUpdate, dayItem);
   };
 
   const cancelButtonHandler = () => {
@@ -208,18 +214,18 @@ function App() {
           />
         ) : null}
         {displayMode === DISPLAY_MODE_DAY ? (
-          <DayShowComponent 
-          events={events} 
-          today={today} 
-          selectedEvent={event} 
-          setEvent={setEvent} 
-          setDisplayMode={setDisplayMode}
-          changeEventHandler={changeEventHandler}
-          cancelButtonHandler={cancelButtonHandler}
-          eventFetchHandler={eventFetchHandler}
-          method={method}
-          removeEventHandler={removeEventHandler}
-          openFormHandler={openFormHandler}
+          <DayShowComponent
+            events={events}
+            today={today}
+            selectedEvent={event}
+            setEvent={setEvent}
+            setDisplayMode={setDisplayMode}
+            changeEventHandler={changeEventHandler}
+            cancelButtonHandler={cancelButtonHandler}
+            eventFetchHandler={eventFetchHandler}
+            method={method}
+            removeEventHandler={removeEventHandler}
+            openFormHandler={openFormHandler}
           />
         ) : null}
       </ShadowWrapper>
